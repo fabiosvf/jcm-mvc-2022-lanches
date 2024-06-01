@@ -1,23 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using MVC_2022.Models;
+using LanchesMac.Models;
 using System.Diagnostics;
 
-namespace MVC_2022.Controllers;
+namespace LanchesMac.Controllers;
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
     {
         return View();
     }

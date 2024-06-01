@@ -1,4 +1,4 @@
-namespace MVC_2022.Models;
+namespace LanchesMac.Models;
 
 public class ErrorViewModel
 {
