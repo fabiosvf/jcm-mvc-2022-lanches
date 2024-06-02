@@ -70,3 +70,45 @@ PM> Update-Database
 ```
 PM> Remove-Migration
 ```
+
+## Padrão `Repository`
+- O padrão `Repository` é um padrão de projeto utilizado para acessar os dados à partir do banco de dados, eliminando o acoplamento, centralizando a logica de acesso a dados e tornando o código mais fácil de dar manutenção.
+
+### Vantagens
+- Essa abordagem possui inúmeras vantagens, dentre elas:
+  - Desacoplar a sua aplicação da lógica de acesso a dados
+  - Centralizar a lógica de acesso a dados
+  - Facilitar a realização de testes
+  - Facilitar a manutenção do código
+  - Minimizar a duplicação de código nas consultas e comandos
+
+### Implementação
+- E pra implementar esse padrão no projeto é muito simples. É necessário:
+  - Criar uma interface com o contrato da lógica de acesso aos dados
+  - Criar uma classe concreta que implementa o contrato da interface
+  - Registrar o `Repository` na sessão `Services` utilizando `Injeção de Dependência`
+- Utilizando o nosso exemplo de `Categorias` e `Lanches`, criaremos a interface `ICategoriaRepository` e implementaremos a lógica na classe `CategoriaRepository`. Da mesma forma, criaremos a interface `ILancheRepository` e implementaremos a lógica na classe `LancheRepository`.
+
+#### Injeção de Dependência
+- `Injeção de Dependência` é um tipo de `Inversão de Controle` e significa que uma classe não mais é responsável por criar ou buscar os objetos dos quais depende. Você coloca a responsabilidade das classes externas na classe que está chamando e não na classe chamada.
+- A `Injeção de Dependência` apenas injeta a dependência de uma classe para outra classe. A `Inversão de Controle` deixa de ter a dependência internamente da classe e passa para uma classe externa.
+- Nós já implementamos a injeção de dependência para a nossa classe `AppDbContext` (que faz o acesso ao banco de dados) através do método `AddDbContext` do `builder.Services` a partir do arquivo `Program.cs`
+- Isso significa que toda vez que alguma classe espera receber uma instância da classe `AppDbContext` no construtor, essa implementação se encarrega de fornecer uma instância da classe.
+- Seguindo essa mesma lógica, será necessário implementar esse registro também para as interfaces e classes `Repository`, e isso será feito através dos métodos `AddTransient<Interface, Class>`, `AddScoped<Interface, Class>` e/ou `AddSingleton<Interface, Class>` também do `builder.Services` a partir do arquivo `Program.cs`
+- Cada um destes métodos possui um escopo de serviço diferente, ou seja, o tempo de vida útil. Esses escopos afetam como o serviço é resolvido e descartado pelo provedor de serviços.
+  - Transient: `builder.Services.AddTransient<Interface, Class>();`
+    - Uma nova instância do serviço é criada cada vez que um serviço é solicitado do provedor de serviços.
+    - Se o serviço for descatável, o escopo do serviço monitorará todas as instâncias do serviço e destruirá todas as instâncias do serviço criadas nesse escopo quando o escopo do serviço for descartado.
+  - Scoped: `builder.Services.AddScoped<Interface, Class>();`
+    - Uma nova instância do serviço é criada em cada `request`.
+    - A cada requisição temos uma nova instância do serviço.
+    - Se o serviço for descartável, ele será descartado quando o escopo do serviço for descartado.
+  - Singleton: `builder.Services.AddSingleton<Interface, Class>();`
+    - Apenas uma instância do serviço é criada se ainda não estiver registrada como uma instância.
+    - Um objeto do serviço é criado e fornecido para todas as requisições.
+    - Todas as requisições obtém o mesmo objeto.
+- No caso deste projeto iremos utilizar a seguinte implementação:
+```cs
+builder.Services.AddTransient<ILancheRepository, LancheRepository>();
+builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
+```
