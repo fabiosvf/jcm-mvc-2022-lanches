@@ -112,3 +112,49 @@ PM> Remove-Migration
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 ```
+
+## Trabalhando com `Session`
+- O protocolo `HTTP` é um protocolo sem estado, dessa forma um servidor web trata cada solicitação HTTP como uma solicitação independente e não retém valores do usuário de requisições anteriores
+- Na ASP .NET Core o estado da sessão é um recurso que podemos utilizar para salvar e armazenar dados do usuário enquanto navega na aplicação. Esse recurso está presente no pacote `Microsoft.AspNetCore.Session`
+- Com base em um dicionário ou tabela hash no servidor, o estado da sessão persiste os dados através das requisições de um navegador.
+- O ASP .NET Core mantém o estada da sessão, dando ao cliente um cookie que contém o ID da sessão, que é enviado ao servidor com cada solicitação.
+- O servidor mantém uma sessão por tempo limitado após a última requisição.
+- Se um valor não for definido, o valor padrão de 20 minutos é definido automaticamente.
+- O estado da sessão é ideal para armazenar dados do usuário específicos de uma determinada sessão.
+- Esses dados ficam armazenados no cache e serão excluídos em duas ocasiões:
+  - Quando a sessão expirar atingindo o tempo limite da sessão
+  - Ou quando o comando `Session.Clear()` for acionado
+ 
+### Configurando a Sessão
+- O recurso `Session` está disponível no pacote `Microsoft.AspNetCore.Session`
+- Esse pacote fornece o `Middleware` para gerenciar o estado da sessão.
+- Para habilitar o `Middleware` da sessão precisamos definir a seguinte configuração no arquivo `Program.cs`:
+  - Registrar a interface `IHttpContextAccessor` para a Injeção de Dependência através de `builder.Services` para que possamos armazenar ou acessar os dados armazenados na sessão.
+```cs
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+```
+  - Configurar o serviço de qualquer um dos caches de memória `IMemoryCache` chamando o método `AddMemoryCache` através de `builder.Services`.
+```cs
+builder.Services.AddMemoryCache();
+```
+  - Configurar o serviço de implementação da `Session` chamando o método `AddSession` através de `builder.Services`.
+```cs
+builder.Services.AddSession();
+```
+  - Ativar o `Middleware` chamando o método `UseSession` através de `app`.
+```cs
+app.UseSession();
+```
+
+### Atribuindo e Obtendo dados da Sessão
+- Para atribuir e/ou obter dados da sessão nós utilizamos a sessão do contexto através de `HttpContext`:
+  - Os dados podem ser atribuído à sessão da seguinte forma:
+```
+HttpContext.Session.SetString("_Nome", "Macoratti");
+HttpContext.Session.SetInt32("_Idade", 23);
+```
+  - Os dados podem ser obtidos da sessão da seguinte forma:
+```
+var nome = HttpContext.Session.GetString("_Nome");
+var idade = HttpContext.Session.GetString("_Idade");
+```
