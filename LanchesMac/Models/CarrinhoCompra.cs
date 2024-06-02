@@ -15,7 +15,7 @@ public class CarrinhoCompra
 	public string CarrinhoCompraId { get; set; }
 	public List<CarrinhoCompraItem> CarrinhoCompraItens { get; set; }
 
-	public static CarrinhoCompra GetCarrinhoCompra(IServiceProvider services)
+	public static CarrinhoCompra GetCarrinho(IServiceProvider services)
 	{
 		//Define uma sessão
 		ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
