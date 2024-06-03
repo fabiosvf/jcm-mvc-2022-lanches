@@ -158,3 +158,55 @@ HttpContext.Session.SetInt32("_Idade", 23);
 var nome = HttpContext.Session.GetString("_Nome");
 var idade = HttpContext.Session.GetString("_Idade");
 ```
+
+## Trabalhando com `ViewComponents`
+- As `ViewComponents` são componentes reutilizáveis no `ASP.NET Core MVC` que encapsulam a lógica de apresentação e podem renderizar uma parte da interface do usuário. Eles são semelhantes a mini-controllers e podem executar lógica complexa antes de renderizar uma view.
+
+### Diferenças entre `ViewComponents` e `PartialViews`
+
+#### 1. Encapsulamento de Lógica
+- **ViewComponents:** Podem incluir lógica C# complexa, semelhante a um controller. Eles têm seu próprio método `Invoke` ou `InvokeAsync`.
+- **PartialViews:** São fragmentos de view que não contém lógica de execução própria e são renderizadas pelo controller ou pela view principal.
+
+#### 2. Independência
+- **ViewComponents:** São independentes e podem ser invocados diretamente sem depender de um controller.
+- **PartialViews:** Dependem de serem invocadas por uma view principal ou controller.
+
+#### 3. Teste e Reutilização
+- **ViewComponents:** Mais fáceis de testar e reutilizar devido à sua independência e encapsulamento de lógica.
+- **PartialViews:** Menos independentes e podem ser mais difíceis de testar isoladamente.
+
+### Capacidades Adicionais de `ViewComponents`
+- **Execução de Lógica Complexa:** Podem executar consultas a banco de dados, chamadas a serviços, e outras operações antes de renderizar a view.
+- **Independência Total:** Podem ser invocados diretamente de uma view, sem passar por um controller.
+
+### Implementação de um `ViewComponent`
+
+#### 1. Criar a Classe do `ViewComponent`
+- Crie uma nova classe que herda de `ViewComponent`.
+- Implemente o método `Invoke` ou `InvokeAsync`.
+```csharp
+public class MyViewComponent : ViewComponent
+{
+    public IViewComponentResult Invoke()
+    {
+        var model = // Obtenha ou prepare o modelo necessário
+        return View(model); // Retorna a view com o modelo
+    }
+}
+```
+
+#### 2. Criar a `View` do `ViewComponent`
+- Crie uma view na pasta `Views/Shared/Components/MyViewComponent/Default.cshtml`
+```csharp
+@model YourModelType
+<div>
+    <!-- Renderize seu conteúdo aqui -->
+</div>
+```
+
+#### 3. Invocar o `ViewComponent` na View Principal
+- Use o método `Component.InvokeAsync` na view principal para renderizar o `ViewComponent`
+```csharp
+@await Component.InvokeAsync("MyViewComponent")
+```
