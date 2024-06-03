@@ -22,10 +22,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @await Component.InvokeAsync("CategoriaMenu")
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Contato" asp-action="Index">Contato</a>
                         </li>
+                        @await Component.InvokeAsync("CategoriaMenu")
                         @await Component.InvokeAsync("CarrinhoCompraResumo")
                     </ul>
                 </div>
@@ -40,7 +40,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - LanchesMac - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - LanchesMac
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
