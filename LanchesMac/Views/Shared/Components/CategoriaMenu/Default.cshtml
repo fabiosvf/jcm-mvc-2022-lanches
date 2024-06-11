@@ -3,7 +3,7 @@
         Lanches
     </a>
 
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
         @foreach(var categoria in Model)
         {
             <li><a class="dropdown-item" style="color:black;" asp-controller="Lanche" asp-action="List" asp-route-categoria="@categoria.CategoriaNome">@categoria.CategoriaNome</a></li>
