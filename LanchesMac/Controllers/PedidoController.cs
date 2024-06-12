@@ -40,7 +40,9 @@ public class PedidoController : Controller
             precoTotalPedido += (item.Lanche.Preco * item.Quantidade);
         }
 
-        pedido.TotalItensPedido = totalItensPedido;
+        ModelState.Remove("PedidoItens");
+
+		pedido.TotalItensPedido = totalItensPedido;
         pedido.PedidoTotal = precoTotalPedido;
 
         if (ModelState.IsValid)
