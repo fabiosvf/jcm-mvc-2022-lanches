@@ -303,3 +303,9 @@ PM> add-migration AdicionarIdentity
 ```
 PM> update-datebase
 ```
+
+### Implementando a Tela de Login
+- Crie a ViewModel `ViewModel\LoginViewModel` qwe será responsável por representar os campos na tela de Login
+- Crie a Controller `Controllers\AccountController` responsável pelo Login
+  - Aqui será necessário criar duas variáveis `private readonly` que são `UserManager<IdentityUser>` e `SignInManager<IdentityUser>`
+  - Em seguida, configure a inicialização das variáveis através do recurso de Injeção de Dependência.
