@@ -263,3 +263,43 @@ PM> dotnet new mvc --auth Individual -o mvc1
   - No campo `Data context class` selecione o `Context` para acesso ao banco de dados via `EntityFramework`
   - E por fim clique em `Add` para adicionar os arquivos selecionados dentro projeto
   - Esses arquivos serão criados dentro da estrutura de pastas `Areas\Identity\Pages\Account` utilizando um recurso chamado `Razor Pages`
+
+## Adaptando um projeto do zero para trabalhar com a API `ASP .NET Core Identity`
+
+### Instalando as bibliotecas
+- Em um primeiro momento será necessário instalar o pacote:
+  - `Microsoft.AspNetCore.Identity.EntityFrameworkCore`
+- Esse pacote pode ser instalado através da tela `Tools > NuGet Package Manager > Package Manager Console` digitando a linha de comando:
+```
+PM> Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+```
+- Ou utilizando a interface visual acessada a partir de `Tools > NuGet Package Manager > Manage NuGet Packages for Solution...` e filtrando pela biblioteca na aba `Browse`
+- Após pesquisar, selecione a biblioteca e na lateral direita, selecione o projeto ao qual deseja aplicar a biblioteca e também a versão desejada e em seguida clique em `Install`
+
+### Configurando o `Identity` no projeto
+- Será necessário alterar o arquivo `Context\AppDbContext` para herdar de `IdentityDbContext<IdentityUser>` ao invés de diretamente do `DbContext`
+  - Esse ajuste é necessário porque iremos utilizar a estrutura de tabelas de usuário e regras de acesso do próprio `Identity` e precisamos que essas tabelas sejam criadas dentro do nosso banco de dados.
+  - Será necessário referenciar os seguintes `namespaces`:
+    - `Microsoft.AspNetCore.Identity`
+    - `Microsoft.AspNetCore.Identity.EntityFrameworkCore`
+- O próximo arquivo a ser alterado é o `Program.cs` na raiz do projeto:
+  - Na parte onde é registrado o contexto, será necessário incluir o seguinte código para registrar o `Identity`:
+```
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+```
+- E pra finalizar, logo abaixo da parte onde é registrado o `app.UseSession` garanta que as seguintes linhas de código sejam implementadas obedecendo essas mesma ordem:
+```
+app.UseAuthentication();
+app.UseAuthorization();
+```
+- Agora, pra criar uma nova Migration para a criação da estrutura de tabelas para autenticação dentro do nosso banco de dados, digite no terminal a linha de comando:
+```
+PM> add-migration AdicionarIdentity
+```
+- Se tiver atualizações para fazer, esse comando vai sugerir a necessidade de atualizar as bibliotecas antes de prosseguir.
+- E para aplicar as `Migrations` no banco de dados, digite:
+```
+PM> update-datebase
+```
