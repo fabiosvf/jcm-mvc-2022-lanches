@@ -210,3 +210,56 @@ public class MyViewComponent : ViewComponent
 ```csharp
 @await Component.InvokeAsync("MyViewComponent")
 ```
+
+## Trabalhando com `Identity` para Autenticação e Autorização
+
+### Autenticação
+- A Autenticação é a verificação de uma identidade feita pela comparação das credenciais apresentadas com outras pré-definidas. (Quem é você?)
+
+### Autorização
+- A Autorização ocorre após a autenticação e permite atribuir e definir privilégios ao sujeito autenticado. (O que você pode fazer?)
+
+### Tipos de Autenticação
+- Existem vários tipos de autenticação. São elas:
+  - None (No Authentication)
+  - Individual (Individual Authentication)
+  - IndividualB2C (Individual Authentication with Azuer AD B2C)
+  - SingleOrg (Organizational Authentication for a Single Tenant)
+  - MultiOrg (Organization Authentication for Multiple Tenants)
+  - Windows (Windows Authentication)
+- Para esse projeto iremos utilizar o `Individual`, também conhecido como `Individual Accounts`
+
+### Trabalhando com a API `ASP .NET Core Identity`
+- O `ASP .NET Core Identity` é uma `API` que suporta a funcionalidade de logon da interface do usuário (UI).
+- Gerencia usuários, senhas, dados de perfil, funções, declarações, tokens, confirmação por email e muito mais.
+- Para criar um projeto do zero em Visual Studio 2022, já utilizando um dos tipos de autenticação, via linha de comando, digite:
+```
+PM> dotnet new mvc --auth Individual -o mvc1
+```
+- Ou, para criar o mesmo projeto utilizando o assistente do Visual Studio 2022, siga os passos:
+  - Abra o `Visual Studio 2022`
+  - Clique na opção `Create a new project`
+  - Selecione ou filtre pelo projeto `ASP.NET Core Web App (Model-View-Controller)` e clique em `Next`
+  - Na tela `Configure your new project`, preencha os campos:
+    - Nome do projeto em `Project name`
+    - O caminho do disco para salvar o projeto em `Location`
+    - Nome da solution em `Solution name`
+    - Em seguida clique em `Next`
+  - Na tela `Additional information`, preencha os campos:
+    - Versão do Framework em `Framework`, no caso desse projeto estou utilizando a versão `.NET 8.0 (Long-term support)`
+    - E o tipo de autenticação em `Authentication type`, no caso desse projeto estou utilizando a opção `Individual Accounts`
+    - Mantenha o campo `Configure for HTTPS` marcado
+    - Mantenha o campo `Enable Docker` desmarcado
+    - Em seguida clique em `Create`
+- O projeto criado, já inclui duas bibliotecas padrão, necessárias para o funcionamento da estrutura de autenticação e autorização. São elas:
+  - `Microsoft.AspNetCore.Identity.EntityFrameworkCore`
+  - `Microsoft.AspNetCore.Identity.UI`
+- A lib `Microsoft.AspNetCore.Identity.UI` possui um conjunto de Views que podem ser personalizadas. Para incluir uma ou mais páginas dessa biblioteca, siga os passos:
+  - Clique com o botão direito do mouse sobre o Nome do Projeto
+  - Selecione a opção `Add` e depois `New Scaffolded Item...`
+  - Na tela `Add New Scaffolded Item` selecione a categoria `Identity` na lateral esquerda, selecione a oção `Identity` na área principal e clique em `Add`
+  - Na próxima tela aberta chamada `Add Identity` é listada todas as `Views` da estrutura de autenticação da biblioteca.
+    - Esse recurso permite selecionar qualquer página, ou todas se achar necessário, e personaliza-las de acordo com as preferências do cliente
+  - No campo `Data context class` selecione o `Context` para acesso ao banco de dados via `EntityFramework`
+  - E por fim clique em `Add` para adicionar os arquivos selecionados dentro projeto
+  - Esses arquivos serão criados dentro da estrutura de pastas `Areas\Identity\Pages\Account` utilizando um recurso chamado `Razor Pages`
