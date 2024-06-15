@@ -309,4 +309,10 @@ PM> update-datebase
 - Crie a Controller `Controllers\AccountController` responsável pelo Login
   - Aqui será necessário criar duas variáveis do tipo `private readonly` que são `UserManager<IdentityUser>` e `SignInManager<IdentityUser>`
   - Em seguida, também será necessário configurar a inicialização das variáveis através do recurso de Injeção de Dependência no construtor da classe.
+  - Além disso, crie o método `Login` tanto como `HttpGet` quanto como `HttpPost`
 - Crie a View `Views\Account\Login`
+- Para mais detalhes consulte o código fonte
+
+### Implementando a Tela de Registro de Usuário
+- No arquivo `Controllers\AccountController` crie o método Register tanto como `HttpGet` quanto como `HttpPost`
+- Para mais detalhes consulte o código fonte
