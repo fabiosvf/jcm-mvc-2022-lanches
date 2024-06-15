@@ -314,5 +314,20 @@ PM> update-datebase
 - Para mais detalhes consulte o código fonte
 
 ### Implementando a Tela de Registro de Usuário
-- No arquivo `Controllers\AccountController` crie o método Register tanto como `HttpGet` quanto como `HttpPost`
+- No arquivo `Controllers\AccountController` crie o método `Register` tanto como `HttpGet` quanto como `HttpPost`
+- No método `Register` do tipo `HttpPost` implemente o `DataAnnotation` chamado `ValidateAntiForgeryToken`
 - Para mais detalhes consulte o código fonte
+
+### Entendendo o recurso `AntiForgeryToken`
+- Este recurso é importante para evitar ataques do tipo `CSRF - Cross Site Request Forgery`, que quer dizer `Falsificação de requisições entre site`
+- A `falsificação de requisição entre sites` é uma técnica que um hacker usa para obter a identidade e os privilégios de usuários que estão autenticados de forma legítima no site, e a seguir ele vai executar qualquer ação que aquele usuário autenticado possa ter direito.
+- Sendo assim, para evitar esse tipo de ataque, foi criado o recurso `AntiForgeryToken` que funciona da seguinte forma:
+  - O cliente solicita uma página HTML que contém um formulário
+  - A ASP.NET Core inclui dois tokens no response:
+    - Um token é enviado como um cookie HTTP cifrado
+    - O outro é colocado em um campo oculto do formulário (hidden)
+  - Os tokens são gerados aleatoriamente para que um hacker não consiga adivinhar os valores
+  - Quando o cliente envia o formulário, ele deve enviar os dois tokens de volta ao servidor
+  - O cliente envia o token do cookie e o token do formulário dentro dos dados do formulário.
+  - Se uma solicitação não incluir os dois tokens que devem ser iguais, o servidor não permitirá a solicitação.
+  - O atributo `[ValidateAntiForgeryToken]` é usado para validar o token gerado na view e assim evitar esses ataques.
