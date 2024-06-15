@@ -14,6 +14,16 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.Configure<IdentityOptions>(options => {
+    // Default Password settings.
+    options.Password.RequireDigit = false; // true;
+    options.Password.RequireLowercase = false; // true;
+    options.Password.RequireNonAlphanumeric = false; // true;
+    options.Password.RequireUppercase = false; // true;
+    options.Password.RequiredLength = 6; // 8;
+    options.Password.RequiredUniqueChars = 1;
+});
+
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
