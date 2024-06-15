@@ -316,6 +316,7 @@ PM> update-datebase
 ### Implementando a Tela de Registro de Usuário
 - No arquivo `Controllers\AccountController` crie o método `Register` tanto como `HttpGet` quanto como `HttpPost`
 - No método `Register` do tipo `HttpPost` implemente o `DataAnnotation` chamado `ValidateAntiForgeryToken`
+- Crie a View `View\Account\Register`
 - Para mais detalhes consulte o código fonte
 
 ### Entendendo o recurso `AntiForgeryToken`
