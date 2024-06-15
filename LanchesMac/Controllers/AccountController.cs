@@ -15,7 +15,7 @@ public class AccountController : Controller
 	}
 
 	[HttpGet]
-	public IActionResult Login(string returnUrl)
+	public IActionResult Login(string returnUrl = null)
 	{
 		return View(new LoginViewModel()
 		{
