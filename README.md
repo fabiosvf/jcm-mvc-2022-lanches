@@ -332,3 +332,14 @@ PM> update-datebase
   - O cliente envia o token do cookie e o token do formulário dentro dos dados do formulário.
   - Se uma solicitação não incluir os dois tokens que devem ser iguais, o servidor não permitirá a solicitação.
   - O atributo `[ValidateAntiForgeryToken]` é usado para validar o token gerado na view e assim evitar esses ataques.
+
+### Implementando o Recurso de Logout
+- Crie a action `Logout` na controller `Account`
+- O código responsável por efetuar o Logoff é o seguinte:
+```
+await _signInManager.SignOutAsync();
+```
+- Agora na pasta `Views\Shared` crie a Partial View `_LoginPartial` e implemente o código HTML responsável por identificar se o usuário está logado ou não
+  - Se o usuário estiver logado no sistema, deverá apresentar um link para efetuar o Logoff
+  - Se o usuário não estiver logado no sistema, deverá apresentar dois links, um link chamado `Log in` para direcionar para a tela de login, e um link chamado `Registro` para direcionar para a tela de cadastro de usuário
+- Para mais detalhes consulte o código fonte
