@@ -42,7 +42,7 @@ public class AccountController : Controller
 				{
 					return RedirectToAction("Index", "Home");
 				}
-				return RedirectToAction(loginViewModel.ReturnUrl);
+				return Redirect(loginViewModel.ReturnUrl);
 			}
 		}
 		ModelState.AddModelError("", "Falha ao realizar o login!");
@@ -74,5 +74,14 @@ public class AccountController : Controller
 			}
 		}
 		return View(registroViewModel);
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Logout()
+	{
+		HttpContext.Session.Clear();
+		HttpContext.User = null;
+		await _signInManager.SignOutAsync();
+		return RedirectToAction("Index", "Home");
 	}
 }
