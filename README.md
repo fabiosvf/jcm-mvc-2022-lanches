@@ -50,6 +50,11 @@ PM> Install-Package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.6
   - Criação de um modelo de entidades que nada mais são do que classes (que representam as tabelas do banco de dados) com as propriedades (que representam os campos das tabelas). No caso deste projeto, esse modelo é representado pelos arquivos `Categoria.cs` e `Lanche.cs` disponíveis na pasta `Models` na raiz do projeto
   - Criação de uma classe de contexto que herda de `DbContext` e `DbSets` para mapear as entidades. Isso foi feito no arquivo `AppDbContext.cs` disponível na pasta `Context` na raiz do projeto
   - Definição da **String de Conexão** no arquivo `appsettings.json` disponível na raiz do projeto
+    - Por questão de segurança, o `EntityFrameworkCore` à partir da versão 7, por padrão, seta o parâmetro `Encrypt` como `True`, exigindo que o servidor onde estiver instalado, tenha um Certificado válido. Para o ambiente de desenvolvimento, podemos setar o parâmetro `Encrypt` como `False`
+    - Uma outra abordagem, também para o ambiente de desenvolvimento, é setar o parâmetro `TrustServerCertificate` como `True` e criar um **Certificado Auto Assinado**.
+      - Pra verificar se o ambiente possui um Certificado Auto Assinado digite `PM> dotnet dev-certs https --check`
+      - Se não existe um Certificado Auto Assinado válido, o mesmo pode ser criado à partir do seguinte comando: `PM> dotnet dev-certs https`
+      - E por fim, pra confiar no Certificado existente na máquina local, digite o seguinte comando: `PM> dotnet dev-certs https --trust`
   - Registro do contexto como um serviço usando `AddDbContext` disponível no arquivo `Program.cs` na raiz do projeto aplicando a **String de Conexão** definida
 
 ### Como funciona
