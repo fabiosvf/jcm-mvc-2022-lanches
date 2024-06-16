@@ -343,3 +343,33 @@ await _signInManager.SignOutAsync();
   - Se o usuário estiver logado no sistema, deverá apresentar um link para efetuar o Logoff
   - Se o usuário não estiver logado no sistema, deverá apresentar dois links, um link chamado `Log in` para direcionar para a tela de login, e um link chamado `Registro` para direcionar para a tela de cadastro de usuário
 - Para mais detalhes consulte o código fonte
+
+### Implementando o Recurso de Autorização
+- Existem algumas formas de restringir o acesso a algumas páginas do sistema para usuários não autenticados.
+- Uma forma bem simples de fazer isso é implementando o código abaixo na View responsável por abrir determinado recurso:
+```
+if (User.Identity.IsAuthenticated)
+{
+  return View();
+}
+return RedirectToAction("Login", "Account");
+```
+- Uma outra forma é decorar a `Action` ou a `Controller` com o Data Annotation `[Authorize]`
+- Enquanto o atributo `[Authorize]` restringe o acesso apenas a usuário autenticados, o atributo `[AllowAnonymous]` libera o acesso a um determinado recurso à usuários não autenticados. Por exemplo:
+```
+[Authorize]
+public class ContatoController: Controller
+{
+  public IActionResult Index()
+  {
+    return View();
+  }
+
+  [AllowAnonymous]
+  public IActionResult Anonimo()
+  {
+    return View();
+  }
+}
+```
+- No código acima, como o atributo `[Authorize]` foi aplicado a `ContatoController` então apenas os usuários autenticados terão acesso as `Actions` dessa `Controller`, com exceção da Action `Anonimo` que possui o atributo `[AllowAnonymous]` em carater de exceção, que irá liberar o acesso para usuários não autenticados.
